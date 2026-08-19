@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { appleLz4Decode, lz4BlockDecode } from "../src/lz4.ts";
 import { tryParseMessage } from "../src/proto.ts";
 import { unwrapEnvelope } from "../src/mindmap.ts";
+import { normalizeListIndent } from "../src/actions.ts";
 
 test("apple LZ4 stored frame", () => {
   const raw = Buffer.from("hello mindnode");
@@ -46,4 +47,21 @@ test("envelope unwrap (uncompressed payload)", () => {
     payload,
   ]);
   assert.deepEqual(unwrapEnvelope(envelope), payload);
+});
+
+test("list indent normalizes to four spaces per level", () => {
+  const src = "# T\n- a\n  - a1\n    - a2\n- b\n";
+  assert.equal(normalizeListIndent(src), "# T\n- a\n    - a1\n        - a2\n- b\n");
+});
+
+test("tabs and mixed widths keep their depth", () => {
+  assert.equal(normalizeListIndent("- a\n\t- a1\n- b\n   - b1"), "- a\n    - a1\n- b\n    - b1");
+});
+
+test("a heading resets list context", () => {
+  assert.equal(normalizeListIndent("- a\n  - a1\n## H\n- b"), "- a\n    - a1\n## H\n- b");
+});
+
+test("ordered lists keep their markers", () => {
+  assert.equal(normalizeListIndent("1. a\n  2. b"), "1. a\n    2. b");
 });

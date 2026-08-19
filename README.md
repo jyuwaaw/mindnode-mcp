@@ -110,7 +110,16 @@ Markdown importer via `open -a MindNode`, which is silent and lossless.
   scrambled, and deleted nodes may linger as `(untitled)`. Use
   `get_mindmap_image` when exactness matters. Documents created via
   `create_mindmap` read back losslessly.
-- `create_mindmap` launches MindNode (import happens in-app, silently).
+- `create_mindmap` launches MindNode (import happens in-app, silently). It
+  always lands the new document at the **library root** — targeting a folder
+  needs the App Intents route (see Roadmap) — and MindNode **auto-renames the
+  document** when the title already exists (the central node keeps the title
+  you asked for). There is no tool yet for adding nodes to an existing map,
+  renaming, or deleting.
+- If an import produces nothing, check MindNode itself: a modal dialog in the
+  app blocks every subsequent open/import, and `open` still exits 0. Only
+  Markdown imports work this way — MindNode registers as a viewer for OPML,
+  FreeMind and TaskPaper, but opening those files is silently ignored.
 - The library is read **read-only, always**. Format verified on MindNode
   2026.4.4; a future MindNode update could shift field numbers — file an
   issue with `tools/spelunk.py` output if outlines come back empty.

@@ -90,6 +90,22 @@ Top level: `f1` header (documentID), repeated `f2` op records:
 Deletions are not yet mapped (deleted nodes may linger in output as
 `(untitled)`).
 
+## Folders
+
+`document.folderID` is **NULL even for documents that sit in a folder** — do
+not read it. The folder tree and its membership live in the `library` table's
+`serializedData`, which is the same envelope + LZ4 + CRDT op stream as a
+document. Its ops carry:
+
+- folder creation `{f1: folderID, f2: parentID}` (parent = libraryID for a
+  top-level folder, another folderID when nested),
+- folder rename `{f1: folderID, f2: "<name>"}` — folders are born as
+  "My Folder" and renamed, so **take the last rename op per folderID**,
+- document membership `{f1: documentID, f2: folderID}`.
+
+Replaying those gives paths like `CoreSpeed / Work Log`. Nothing in the write
+path can target a folder yet; MoveDocumentsIntent is the App Intents route.
+
 ## Preview images
 
 MindNode caches its own renders next to the snapshots:
@@ -98,10 +114,22 @@ pixel-perfect ground truth for any document that has been opened once.
 
 ## Other automation surfaces (write path)
 
-- **File import**: `open -a MindNode <file>` with Markdown/OPML/FreeMind/
-  TaskPaper/TextBundle/Xmind/iThoughts silently imports into the library as a
-  new document (first `#` heading = central node). This is the current
-  `create_mindmap` mechanism.
+- **File import**: `open -a MindNode <file.md>` silently imports into the
+  library as a new document (first `#` heading = central node). This is the
+  current `create_mindmap` mechanism. Verified behavior:
+  - **Markdown is the only format that works this way.** MindNode registers
+    as a Viewer for OPML, FreeMind, TaskPaper and friends, but `open`-ing
+    those produces no document at all — silently ignored.
+  - **Nesting needs 4 spaces or a tab per level.** Two-space indentation, the
+    common Markdown convention, is flattened into siblings. `##` headings
+    also nest. (`normalizeListIndent` in `src/actions.ts` re-emits any
+    self-consistent indentation at 4 spaces.)
+  - **Title collisions are auto-renamed** by MindNode: importing "Aug 19"
+    while an "Aug 19" exists yielded a document titled "Aug 2". The central
+    node keeps the requested text.
+  - The document lands at the **library root**; the importer offers no way to
+    target a folder (folders live in the `library` blob's own CRDT op stream —
+    see below).
 - **URL scheme**: `mindnode://documents/<documentID>/content/`,
   `mindnode://documents/by-name/<name>/content/`,
   `mindnode-next://newDocument?type=mindMap|outline`.

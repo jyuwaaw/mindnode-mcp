@@ -1,6 +1,6 @@
 {
   "name": "mindnode-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MCP server for MindNode (macOS): connect Claude and AI agents to the mind-mapping app with no API — read mind maps as Markdown, create maps from outlines",
   "type": "module",
   "license": "MIT",

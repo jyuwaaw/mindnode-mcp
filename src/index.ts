@@ -98,7 +98,7 @@ server.registerTool(
   {
     title: "Create a mind map",
     description:
-      "Create a new mind map in MindNode by importing Markdown. The first `#` heading becomes the central node; nested bullet lists (and deeper headings) become branches. Opens MindNode.",
+      "Create a new mind map in MindNode by importing Markdown. The first `#` heading becomes the central node; nested bullet lists (and deeper headings) become branches — write any consistent indentation, it is re-emitted at the four spaces per level MindNode requires. The document lands at the library root (placing it in a folder is not supported yet), and MindNode auto-renames the document if the title already exists — the central node keeps the requested title regardless.",
     inputSchema: {
       title: z.string().describe("Central node / document title"),
       markdown: z
