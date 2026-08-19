@@ -1,5 +1,10 @@
 # MindNode MCP Server
 
+[![npm](https://img.shields.io/npm/v/mindnode-mcp)](https://www.npmjs.com/package/mindnode-mcp)
+[![license](https://img.shields.io/npm/l/mindnode-mcp)](LICENSE)
+![node](https://img.shields.io/node/v/mindnode-mcp)
+![platform](https://img.shields.io/badge/platform-macOS-lightgrey)
+
 **Connect [MindNode](https://mindnode.com) to Claude and any AI agent — an
 MCP server for the mind-mapping app that has no API, no AppleScript, and no
 exportable files.**
