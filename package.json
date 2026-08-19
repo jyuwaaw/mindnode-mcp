@@ -24,20 +24,32 @@
     "automation",
     "reverse-engineering"
   ],
-  "os": ["darwin"],
+  "os": [
+    "darwin"
+  ],
   "bin": {
-    "mindnode-mcp": "src/index.ts"
+    "mindnode-mcp": "dist/index.js"
   },
+  "files": [
+    "dist",
+    "docs"
+  ],
   "engines": {
     "node": ">=24"
   },
   "scripts": {
     "start": "node src/index.ts",
+    "build": "tsc",
+    "prepublishOnly": "npm run build && npm test",
     "inspect": "npx @modelcontextprotocol/inspector node src/index.ts",
     "test": "node --test \"test/*.test.ts\""
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",
     "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "typescript": "^7.0.2"
   }
 }

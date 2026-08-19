@@ -36,18 +36,12 @@ Works with Claude Code, Claude Desktop, and any MCP client.
 
 ## Install
 
-Requires macOS with MindNode 2024+ and Node.js ≥ 24 (runs TypeScript
-natively — no build step).
-
-```sh
-git clone https://github.com/jyuwaaw/mindnode-mcp.git
-cd mindnode-mcp && npm install
-```
+Requires macOS with MindNode 2024+ and Node.js ≥ 24.
 
 **Claude Code:**
 
 ```sh
-claude mcp add --scope user mindnode -- node /path/to/mindnode-mcp/src/index.ts
+claude mcp add --scope user mindnode -- npx -y mindnode-mcp
 ```
 
 **Claude Desktop / any MCP client** (`claude_desktop_config.json`):
@@ -56,11 +50,19 @@ claude mcp add --scope user mindnode -- node /path/to/mindnode-mcp/src/index.ts
 {
   "mcpServers": {
     "mindnode": {
-      "command": "node",
-      "args": ["/path/to/mindnode-mcp/src/index.ts"]
+      "command": "npx",
+      "args": ["-y", "mindnode-mcp"]
     }
   }
 }
+```
+
+**From source** (Node ≥ 24 runs the TypeScript directly, no build step):
+
+```sh
+git clone https://github.com/jyuwaaw/mindnode-mcp.git
+cd mindnode-mcp && npm install
+claude mcp add --scope user mindnode -- node /path/to/mindnode-mcp/src/index.ts
 ```
 
 Debug with the MCP inspector: `npm run inspect`.
