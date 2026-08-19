@@ -1,8 +1,30 @@
 {
   "name": "mindnode-mcp",
   "version": "0.1.0",
-  "description": "MCP server for MindNode (macOS) — read the MindNode Next library, create and open mind maps",
+  "description": "MCP server for MindNode (macOS): connect Claude and AI agents to the mind-mapping app with no API — read mind maps as Markdown, create maps from outlines",
   "type": "module",
+  "license": "MIT",
+  "author": "jyuwaaw <jyuwaaw@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jyuwaaw/mindnode-mcp.git"
+  },
+  "homepage": "https://github.com/jyuwaaw/mindnode-mcp#readme",
+  "bugs": "https://github.com/jyuwaaw/mindnode-mcp/issues",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "modelcontextprotocol",
+    "mindnode",
+    "mind-map",
+    "mindmap",
+    "macos",
+    "claude",
+    "ai-agent",
+    "automation",
+    "reverse-engineering"
+  ],
+  "os": ["darwin"],
   "bin": {
     "mindnode-mcp": "src/index.ts"
   },
